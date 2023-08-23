@@ -15,7 +15,13 @@ namespace API.Extensions
             string connectionString = GetConnectionString(config);
             services.AddDbContext<DataContext>(opt => 
             {
-                opt.UseNpgsql(connectionString);
+                opt.UseNpgsql(
+                    connectionString, 
+                    builder => 
+                    {
+                        builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
+                    }
+                );
             });
             services.AddCors();
             services.AddScoped<ITokenService, TokenService>();
@@ -60,7 +66,6 @@ namespace API.Extensions
                 var pgPort = pgHostPort.Split(":")[1];
 
                 connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}; SSL Mode=disable; Trust Server Certificate=true"; 
-                //connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}; Trust Server Certificate=true";
             }
 
             return connStr;
