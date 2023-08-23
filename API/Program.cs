@@ -34,7 +34,7 @@ app.UseCors(builder => builder
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials()
-    .WithOrigins("https://localhost:4200"));
+    .WithOrigins("https://connectingapp.fly.dev"));
 
 app.UseHttpsRedirection();
 
